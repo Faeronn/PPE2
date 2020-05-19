@@ -1,0 +1,206 @@
+drop database if exists mlr3;
+
+create database if not exists mlr3;
+use mlr3;
+# -----------------------------------------------------------------------------
+#       table : categorieadh
+# -----------------------------------------------------------------------------
+
+create table if not exists categorieadh
+ (
+   idcategorie integer(2)  auto_increment ,
+   idtarif integer(2) not null  ,
+   nomcategorie varchar(255) null  ,
+   agemini integer(2) null  ,
+   agemaxi integer(2) null  
+   , primary key (idcategorie) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : atelier
+# -----------------------------------------------------------------------------
+
+create table if not exists atelier
+ (
+   idatelier integer(2)  auto_increment ,
+   nomatelier varchar(255) null  ,
+   dateatelier date null  ,
+   heuredebut time null  ,
+   heurefin time null  ,
+   objectif varchar(255) null  
+   , primary key (idatelier) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : equipe
+# -----------------------------------------------------------------------------
+
+create table if not exists equipe
+ (
+   idequipe integer(2)  auto_increment ,
+   nomequipe varchar(255) null  
+   , primary key (idequipe) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : tarif
+# -----------------------------------------------------------------------------
+
+create table if not exists tarif
+ (
+   idtarif integer(2)  auto_increment ,
+   nomtarif varchar(255) null  ,
+   age integer(2) null  ,
+   remise integer(2) null  
+   , primary key (idtarif) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : adherent
+# -----------------------------------------------------------------------------
+
+create table if not exists adherent
+ (
+   idadherent integer(2)  auto_increment ,
+   idcategorie integer(2) not null  ,
+   idequipe integer(2) not null  ,
+   nomadherent varchar(255) null  ,
+   prenomadherent varchar(255) null  ,
+   adresseadherent varchar(255) null  ,
+   codepostal varchar(255) null  ,
+   teladherent varchar(255) null  ,
+   emailadherent varchar(255) null  ,
+   datenaissadherent date null  
+   , primary key (idadherent) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : film
+# -----------------------------------------------------------------------------
+
+create table if not exists film
+ (
+   idfilm integer(2)  auto_increment ,
+   titre varchar(255) null  
+   , primary key (idfilm) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : personnage
+# -----------------------------------------------------------------------------
+
+create table if not exists personnage
+ (
+   idpersonnage integer(2)  auto_increment ,
+   iddoublage integer(2) null  ,
+   idfilm integer(2) not null  ,
+   nompersonnage varchar(255) null  
+   , primary key (idpersonnage) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : doublage
+# -----------------------------------------------------------------------------
+
+create table if not exists doublage
+ (
+   iddoublage integer(2)  auto_increment ,
+   idequipe integer(2) not null  ,
+   description varchar(255) null  ,
+   datedoublage date null  ,
+   heuredebut time null  ,
+   heurefin time null  ,
+   organisateur varchar(255) null  ,
+   lieu varchar(255) null  
+   , primary key (iddoublage) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : prise
+# -----------------------------------------------------------------------------
+
+create table if not exists prise
+ (
+   idprise integer(2)  auto_increment ,
+   idadherent integer(2) not null  ,
+   idpersonnage integer(2) not null  
+   , primary key (idprise) 
+ ) 
+ comment = "";
+
+# -----------------------------------------------------------------------------
+#       table : participe
+# -----------------------------------------------------------------------------
+
+create table if not exists participe
+ (
+   idadherent integer(2) not null  ,
+   idatelier integer(2) not null  ,
+   presence bool null  
+   , primary key (idadherent,idatelier) 
+ ) 
+ comment = "";
+
+
+# -----------------------------------------------------------------------------
+#       creation des references de table
+# -----------------------------------------------------------------------------
+
+
+alter table categorieadh 
+  add foreign key fk_categorieadh_tarif (idtarif)
+      references tarif (idtarif) ;
+
+
+alter table adherent 
+  add foreign key fk_adherent_categorieadh (idcategorie)
+      references categorieadh (idcategorie) ;
+
+
+alter table adherent 
+  add foreign key fk_adherent_equipe (idequipe)
+      references equipe (idequipe) ;
+
+
+alter table personnage 
+  add foreign key fk_personnage_doublage (iddoublage)
+      references doublage (iddoublage) ;
+
+
+alter table personnage 
+  add foreign key fk_personnage_film (idfilm)
+      references film (idfilm) ;
+
+
+alter table doublage 
+  add foreign key fk_doublage_equipe (idequipe)
+      references equipe (idequipe) ;
+
+
+alter table prise 
+  add foreign key fk_prise_adherent (idadherent)
+      references adherent (idadherent) ;
+
+
+alter table prise 
+  add foreign key fk_prise_personnage (idpersonnage)
+      references personnage (idpersonnage) ;
+
+
+alter table participe 
+  add foreign key fk_participe_adherent (idadherent)
+      references adherent (idadherent) ;
+
+
+alter table participe 
+  add foreign key fk_participe_atelier (idatelier)
+      references atelier (idatelier) ;
+

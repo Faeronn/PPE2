@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Connexion</title>
+	</head>
+
+	<body>
+		<?php
+			if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && isset($_POST['tel'])) {
+				$nom = htmlspecialchars($_POST['nom']);
+          		$prenom = htmlspecialchars($_POST['prenom']);
+          		$email = htmlspecialchars($_POST['email']);
+          		$tel = htmlspecialchars($_POST['tel']);
+          		$mess = htmlspecialchars($_POST['message']);
+
+          		echo $nom;
+     		} 			
+		?>
+	</body>
+</html>

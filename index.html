@@ -1,0 +1,656 @@
+<?php
+    require_once('php/fonctions.php');
+	session_start();
+?>	
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>PPE2</title>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Favicons -->
+        <link href="images/favicon.ico" rel="icon">
+        <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i%7CPoppins:300,400,500,700" rel="stylesheet">
+
+        <!-- BootStrap CSS File -->
+        <link href="styles/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Libaries CSS Files -->
+        <link href="styles/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="styles/animate/animate.min.css" rel="stylesheet">
+
+        <!-- Main CSS File -->
+        <link href="styles/style.css" rel="stylesheet">
+
+         <!-- Javascript Libaries Files-->
+        <script src="javascript/jquery/jquery.min.js"></script>
+        <script src="javascript/jquery/jquery-migrate.min.js"></script>
+        <script src="javascript/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="javascript/easing/easing.min.js"></script>
+        <script src="javascript/wow/wow.min.js"></script>
+        <script src="javascript/waypoints/waypoints.min.js"></script>
+        <script src="javascript/counterup/counterup.min.js"></script>
+        <script src="javascript/superfish/hoverIntent.js"></script>
+        <script src="javascript/superfish/superfish.min.js"></script>
+
+        <!-- Javascript Contact Form File-->
+        <script src="javascript/contactform.js"></script>
+
+        <!-- Javascript Main Files-->
+        <script src="javascript/main.js"></script>
+        <script src="javascript/modules.js"></script>
+        <script src="scriptTest.js"></script>
+    </head>
+
+    <script>
+        var modal1 = document.getElementById('id01');
+        var modal2 = document.getElementById('id02');
+
+        window.onclick = function(event) {
+            if (event.target == modal1 || event.target == modal2) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <body>
+        
+        <header id="header">
+            <div class="container">
+                <div id="logo" class="pull-left">
+                    <h1><a href="#hero">Maison Culture</a></h1>
+                </div>
+
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active"><a href="#hero">Accueil</a></li>
+                        <li><a href="#about">A Propos</a></li>
+                        <li><a href="#calendar">Evenements</a></li>
+                        <li><a href="#tarifs">Tarifs</a></li>
+                        <li><a href="#adh">Adhérents</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <?php checkSession(); ?>
+                    </ul>
+                </nav>
+            </div>
+            
+        </header>
+
+        <!--==========================
+            Hero Section
+        ===========================-->
+        <section id="hero">
+            <div class="hero-container">
+                <p class="big">Le Doublage</p>
+                <h2>Créer du contenu culturel est à portée de tous.</h2>
+                <a href="#about" class="btn-get-started">Découvrir</a>
+            </div>
+
+            <div id="id02" class="modal">
+                <form class="modal-content animate" action="php/inscription.php" method="post">
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <p class="almostBig text-center">Inscription</p>
+                    </div>
+
+                    <div class="container">
+                        <input type="text" id="nom" name="nom" placeholder="Nom * " required pattern="[a-zA-Z]*">
+
+                        <input type="text" id="prenom" name="prenom" placeholder="Prenom * " required pattern="[a-zA-Z]*">
+
+                        <input type="email" id="mail" name="mail" placeholder="Email * " required pattern="[^@]+@[^@]+\.[a-zA-Z0-9]{2,6}">
+
+                        <p class="dateContainer">Date de Naissance * :  <input type="date" id="dateNaiss" name="dateNaiss" required></p>
+
+                        <input type="text" id="adresse" name="adresse" placeholder="Adresse">
+
+                        <input type="text" id="codePostal" name="codePostal" placeholder="Code Postal" pattern="[0-9]{5}">
+
+                        <input type="text" id="tel" name="tel" placeholder="N° de téléphone" pattern="^0[1-9][0-9]{8}">
+
+                        <div class="usernameContainer"><input type="text" id="login" name="login" placeholder="Nom d'utilisateur * " required oninput="checkUsername();"><p id="isValid"></p></div>
+
+                        <p class="passInfo"> * Votre mot de passe doit contenir au moins 6 caractères, dont un chiffre et une lettre. </p>
+                        <input type="password" id="pass" name="pass" placeholder="Mot de passe * " required oninput="checkPass();" pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{6,15}$">
+
+                        <input type="password" id="passVerif" name="passVerif" placeholder="Retapez le Mot de Passe * " required oninput="checkPass();">
+                        
+                        <div class="text-center">
+                            <button type="submit" id="submit">Confirmer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="id01" class="modal">
+                <form class="modal-content animate" method="post" action="php/connexion.php">
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <p class="almostBig text-center">Connexion</p>
+                    </div>
+
+                    <div class="statusContainer">
+                    	<p class="text-center" id="statusLog"></p>
+                    </div>
+
+                    <div class="container">
+                        <label for="loginC"><b>Nom d'Utilisateur *</b></label>
+                        <input type="text" name="loginC" id="loginC" placeholder="Entrez votre nom d'utilisateur" required>
+
+                        <label for="passC"><b>Mot de Passe *</b></label>
+                        <input type="password" name="passC" id="passC" placeholder="Entrez votre mot de passe" required>
+
+                        <label>
+                            <input type="checkbox" checked="checked" name="remember"> Se souvenir de moi
+                        </label>
+
+                        <div class="text-center"><button type="submit">Se Connecter</button></div>
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+
+        <!--==========================
+            About Section
+        ===========================-->
+        <main id="main">
+
+            <section id="about">
+                <div class="container">
+                    <div class="row about-container">
+                        <div class="col-lg-6 content order-lg-1 order-2">
+                            <h2 class="title">Qu'est ce que le Doublage ?</h2>
+                            <p>Le doublage est une pratique qui consiste à remplacer la langue d'origine par la langue souhaitée en faisant appel à des comédiens qui donneront leur voix au personnage.</p>
+
+                            <div class="icon-box wow fadeInUp">
+                                <div class="icon">
+                                    <i class="fa fa-address-card-o"></i>
+                                </div>
+
+                                <h4 class="title">Direction Artistique</h4>
+                                <p class="description" id="info1">Passez votre curseur sur l'image pour reveler le contenu.</p>
+                            </div>
+
+                            <div class="icon-box wow fadeInUp" data-wow-delay="0.2s">
+                                <div class="icon">
+                                    <i class="fa fa-bars"></i>
+                                </div>
+                                
+                                <h4 class="title">Adaptation</h4>
+                                <p class="description" id="info2">Passez votre curseur sur l'image pour reveler le contenu.</p>
+                            </div>
+
+                            <div class="icon-box wow fadeInUp" data-wow-delay="0.4s">
+                                <div class="icon">
+                                    <i class="fa fa-comment-o"></i>
+                                </div>
+                                
+                                <h4 class="title">Doublage</h4>
+                                <p class="description" id="info3">Passez votre curseur sur l'image pour reveler le contenu.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 order-lg-2 order-1 wow fadeInRight responsiveImg">
+                            <img src="images/about-img2.jpg" alt="" usemap="#infosDub">
+
+                            <map name="infosDub">
+                                <area shape="circle" coords="74,284,68" onmouseover="showInfos(1)">
+                                <area shape="circle" coords="212,76,66" onmouseover="showInfos(2)">
+                                <area shape="circle" coords="508,211,66" onmouseover="showInfos(3)">
+                            </map>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!--==========================
+                Facts Section
+            ===========================-->
+            <section id="facts">
+                <div class="container wow fadeIn">
+                    <div class="section-header">
+                        <h3 class="section-title">Faits</h3>
+                        <p class="section-description">Dans le doublage, il y a certains faits impressionnants, en voilà quelques-uns.</p>
+                    </div>
+
+                    <div class="row counters">
+                        <div class="col-lg-3 col-6 text-center">
+                            <span data-toggle="counter-up">1929</span>
+                            <p>Premier Doublage</p>
+                        </div>
+
+                        <div class="col-lg-3 col-6 text-center">
+                            <span data-toggle="counter-up">10000</span>
+                            <p>Heures de programmes doublés /an</p>
+                        </div>
+
+                        <div class="col-lg-3 col-6 text-center">
+                            <span data-toggle="counter-up">150000000</span>
+                            <p>Euros /an</p>
+                        </div>
+
+                        <div class="col-lg-3 col-6 text-center">
+                            <span data-toggle="counter-up">5000000</span>
+                            <p>Films doublés en France</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!--==========================
+                Dubbers Section
+            ===========================-->
+            <section id="dubbers">
+                <div class="container wow fadeIn">
+                    <div class="section-header">
+                        <h3 class="section-title">Doubleurs Connus</h3>
+                        <p class="section-description">Liste des doubleurs connus, et leurs personnages les plus connus.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="actor">
+                                <div class="pic">
+                                    <img src="images/dub-1.png" alt="">
+                                </div>
+                                <h4 class="title">Pascale Chemin</h4>
+                                <span>Hunter × Hunter (2011) : Kirua</span>
+                                <span>Final Fantasy: Unlimited : Yu Hayakawa</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="actor">
+                                <div class="pic">
+                                    <img src="images/dub-2.jpg" alt="">
+                                </div>
+                                <h4 class="title">Alexis Tomassian</h4>
+                                <span>The Social Network : Sean Parker</span>
+                                <span>Futurama : Fry</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="actor">
+                                <div class="pic">
+                                    <img src="images/dub-3.jpg" alt="">
+                                </div>
+                                <h4 class="title">Donald Reignoux</h4>
+                                <span>Neon Genesis Evangelion : Shinji Ikari</span>
+                                <span>Le Voyage de Chihiro : Haku</span>
+                                <span>Dragons : Harold</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="actor">
+                                <div class="pic">
+                                    <img src="images/dub-4.jpg" alt="">
+                                </div>
+                                <h4 class="title">Brigitte Lecordier</h4>
+                                <span>Dragon Ball : Son Goku </span>
+                                <span>Wakfu : Ogrest</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+
+
+            <!--==========================
+                Calendar Section
+            ===========================-->
+            <section id="calendar">
+                <div class="container wow fadeInUp">
+                    <div class="section-header">
+                        <h3 class="section-title">Evènements</h3>
+                        <p class="section-description">Liste des dates importantes dans le monde du Doublage, et les activités du club.</p>
+                    </div>
+
+                    <div>
+                        <h2>Calendrier des Activités du Club</h2>
+                        <p class="lead">Les activités du club se font chaque semaine.</p>
+
+                        <div class="agenda">
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Heure</th>
+                                            <th>Événement</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td class="agenda-date active" rowspan="1">
+                                                <div class="week">Mercredi</div>
+                                            </td>
+
+                                            <td class="agenda-time">
+                                                13h00 - 18h00
+                                            </td>
+
+                                            <td class="agenda-events">
+                                                <div class="agenda-event">
+                                                    <i class="glyphicon glyphicon-repeat text-muted" title="Repeating event"></i>
+                                                    Atelier Doublage.
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="agenda-date active" rowspan="1">
+                                                <div class="week">Samedi</div>
+                                            </td>
+
+                                            <td class="agenda-time">
+                                                13h00 - 18h00
+                                            </td>
+
+                                            <td class="agenda-events">
+                                                <div class="agenda-event">
+                                                    <i class="glyphicon glyphicon-repeat text-muted" title="Repeating event"></i>
+                                                    Atelier Direction Artisitque.
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="agenda-date active" rowspan="1">
+                                                <div class="week">Dimanche</div>
+                                            </td>
+
+                                            <td class="agenda-time">
+                                                13h00 - 18h00
+                                            </td>
+
+                                            <td class="agenda-events">
+                                                <div class="agenda-event">
+                                                    <i class="glyphicon glyphicon-repeat text-muted" title="Repeating event"></i>
+                                                    Atelier Thêatre.
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+                                <hr>
+                                <br>
+
+                                <h2>Calendrier des Evénements liés au Doublage</h2>
+                                <table class="table table-condensed table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Heure</th>
+                                            <th>Événement</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td class="agenda-date active" rowspan="1">
+                                                <div class="dayofmonth">15</div>
+                                                <div class="dayofweek">Mardi</div>
+                                                <div class="shortdate text-muted">Janvier 2019</div>
+                                            </td>
+
+                                            <td class="agenda-time">
+                                                18h30 - 22h30
+                                            </td>
+
+                                            <td class="agenda-events">
+                                                <div class="agenda-event">
+                                                    <i class="glyphicon glyphicon-repeat text-muted" title="Repeating event"></i>
+                                                    Atelier Doublage.
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="agenda-date active" rowspan="1">
+                                                <div class="dayofmonth">1</div>
+                                                <div class="dayofweek">Jeudi</div>
+                                                <div class="shortdate text-muted">Fevrier 2019</div>
+                                            </td>
+
+                                            <td class="agenda-time">
+                                                13h30 - 20h00
+                                            </td>
+
+                                            <td class="agenda-events">
+                                                <div class="agenda-event">
+                                                    <i class="glyphicon glyphicon-repeat text-muted" title="Repeating event"></i>
+                                                    Rencontre de Doubleurs à Nîmes.
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!--==========================
+                Tarifs Section
+            ===========================-->
+            <section id="tarifs">
+                <div class="container wow fadeInUp">
+                    <div class="section-header">
+                        <h3 class="section-title">Tarifs</h3>
+                        <p class="section-description">Simulateur de calcul de coût de cotisation annuelle à la Maison de la Culture.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="tabTest">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Catégorie</th>
+                                            <th scope="col">Coût Cotisation</th>
+                                            <th scope="col" class="text-center">Quantité</th>
+                                            <th scope="col" class="text-right">Prix</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td class="firstPad">Enfant -12 ans</td>
+                                            <td>35 €</td>
+                                            <td><input class="form-control" type="text" id="nbEnfants" placeholder="0" autocomplete="off" oninput=calculTarif()></td>
+                                            <td class="text-right" id="prixEnfants">0 €</td>
+                                            <td class="text-right"><button class="btn btn-sm btn-danger" onclick="eraseData('nbEnfants')"><i class="fa fa-trash"></i> </button> </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Enfant 12 - 16 ans</td>
+                                            <td>40 €</td>
+                                            <td><input class="form-control" type="text" id="nbAdos" placeholder="0" autocomplete="off" oninput=calculTarif()></td>
+                                            <td class="text-right" id="prixAdos">0 €</td>
+                                            <td class="text-right"><button class="btn btn-sm btn-danger" onclick="eraseData('nbAdos')"><i class="fa fa-trash"></i> </button> </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Enfant 16 - 18 ans</td>
+                                            <td>45 €</td>
+                                            <td><input class="form-control" type="text" id="nbMoyen" placeholder="0" autocomplete="off" oninput=calculTarif()></td>
+                                            <td class="text-right" id="prixMoyen">0 €</td>
+                                            <td class="text-right"><button class="btn btn-sm btn-danger" onclick="eraseData('nbMoyen')"><i class="fa fa-trash"></i> </button> </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Adulte</td>
+                                            <td>50 €</td>
+                                            <td><input class="form-control" type="text" id="nbAdultes" placeholder="0" autocomplete="off" oninput=calculTarif()></td>
+                                            <td class="text-right" id="prixAdultes">0 €</td>
+                                            <td class="text-right"><button class="btn btn-sm btn-danger" onclick="eraseData('nbAdultes')"><i class="fa fa-trash"></i> </button> </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right" id="prixTotal"><strong>0 €</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!--==========================
+                Adhrents Section
+            ===========================-->
+            <section id="adh">
+                <div class="container wow fadeInUp">
+                    <div class="section-header">
+                        <h3 class="section-title">Adhérents</h3>
+                        <p class="section-description">Liste des adhérents de la maison de la culture.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <form action="#adh" method="post">
+                                    <div class="text-center">
+                                        <label for="tri">Lister par catégorie : </label>
+                                        <select id="tri" name="tri">
+                                            <option value="1">Catégorie</option>
+                                            <option value="2">Nom</option>
+                                            <option value="3">Prenom</option>
+                                            <option value="4">Email</option>
+                                        </select>
+                                        <button type="submit" class="triBtn">Lister les adhérents</button>
+                                    </div>
+                                </form>
+
+                                <table class="table table-striped tabTest">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Catégorie</th>
+                                            <th scope="col">Nom</th>
+                                            <th scope="col">Prenom</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php getAdh(); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <br>
+                            <hr>
+                            <br>
+
+                            <div>
+                                <p class="text-center almostBig">Statistiques</p>
+                                <?php getStats(); ?>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!--==========================
+                Contact Section
+            ===========================-->
+            <section id="contact">
+                <div class="container wow fadeInUp">
+                    <div class="section-header">
+                        <h3 class="section-title">Contact</h3>
+                        <p class="section-description">Contactez-nous si vous voulez avoir plus d'informations.</p>
+                    </div>
+
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1017.5648191511257!2d4.368771346658549!3d43.832859895156815!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12b42d103fb896a9%3A0x2d491738deb25561!2sLyc%C3%A9e+CCI+Gard!5e0!3m2!1sfr!2sfr!4v1542119937165" height="380" allowfullscreen></iframe>
+
+                    <div class="container wow fadeInUp mt-5">
+                        <div class="row justify-content-center">
+                            <div class="form">
+                                <form class="formu" action="#" method="post">
+                                    <p class="text-center almostBig">Formulaire de Contact</p>
+
+                                    <label for="nom">Nom <b>*</b></label>
+                                    <input type="text" id="nom" name="nom" placeholder="Votre Nom" required pattern="\X*">
+
+                                    <label for="prenom">Prénom <b>*</b></label>
+                                    <input type="text" id="prenom" name="prenom" placeholder="Votre Prenom" required pattern="[a-zA-Z]*">
+
+                                    <label for="mail">Email <b>*</b></label>
+                                    <input type="email" id="mail" name="mail" placeholder="Votre Email" required pattern="[^@]+@[^@]+\.[a-zA-Z0-9]{2,6}">
+
+                                    <label for="tel">N° Telephone <b>*</b></label>
+                                    <input type="text" id="tel" name="tel" placeholder="Votre N° de téléphone" required pattern="^0[1-9][0-9]{8}">
+
+                                    <label for="auth">Autorisation parentale (si Mineur)</label>
+                                    <input type="file" id="auth" name="auth"qs>
+
+                                    <label for="objet">Objet</label>
+                                    <input type="text" id="objet" name="objet" placeholder="Objet de votre message">
+
+                                    <label for="message">Votre Message <b>*</b></label>
+                                    <textarea id="message" name="message" placeholder="Contenu de votre message..." required></textarea>
+
+                                    <div class="text-center"><button type="submit">Envoyer le Message</button></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+
+        <!--==========================
+            Footer
+        ===========================-->
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container"></div>
+            </div>
+
+            <div class="container">
+                <div class="copyright">
+                    &copy; Copyright <strong>Alexis Lelardoux</strong>. All Rights Reserved
+                </div>
+
+                <div class="credits">
+                    Designed by <a href="https://github.com/Faeronn/">Faeronn</a>
+                </div>
+            </div>
+        </footer>
+
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    </body>
+</html>
